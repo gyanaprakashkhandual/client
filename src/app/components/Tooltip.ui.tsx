@@ -51,7 +51,7 @@ export const Tooltip = ({
             animate="visible"
             exit="exit"
             className={`
-              absolute z-9999 bg-black text-white text-[13px] leading-4.5 px-2.5 py-1.5 rounded shadow-[0_2px_8px_rgba(0,0,0,0.26)] whitespace-nowrap font-semi-bold pointer-events-none
+              absolute z-999 bg-black text-white text-[13px] leading-4.5 px-2.5 py-1.5 rounded shadow-[0_2px_8px_rgba(0,0,0,0.26)] whitespace-nowrap font-semi-bold pointer-events-none
               ${positionClasses[calculatedPosition] || positionClasses.top}
             `}
             style={{ maxWidth: `${maxWidth}px` }}

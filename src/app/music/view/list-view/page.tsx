@@ -13,9 +13,9 @@ import {
   Heart,
   MessageCircle,
   Clock,
-  Eye,
 } from "lucide-react";
 import type { IMusic } from "@/app/lib/types";
+import { Tooltip } from "@/app/components/Tooltip.ui";
 
 interface MusicListViewProps {
   tracks: IMusic[];
@@ -51,7 +51,6 @@ export default function MusicListView({
   tracks,
   onEdit,
   onDelete,
-  onView,
   isLoading,
 }: MusicListViewProps) {
   const [sortKey, setSortKey] = useState<SortKey>("title");
@@ -323,15 +322,9 @@ export default function MusicListView({
 
                   <td className="px-5 py-3.5">
                     <div className="flex items-center justify-end gap-0.5">
-                      <motion.button
-                        whileHover={{ scale: 1.08 }}
-                        whileTap={{ scale: 0.92 }}
-                        onClick={() => onView(track)}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors duration-150"
-                      >
-                        <Eye className="h-3.5 w-3.5" />
-                      </motion.button>
-                      <motion.button
+                
+                      <Tooltip content="Edit">
+                        <motion.button
                         whileHover={{ scale: 1.08 }}
                         whileTap={{ scale: 0.92 }}
                         onClick={() => onEdit(track)}
@@ -339,6 +332,8 @@ export default function MusicListView({
                       >
                         <Pencil className="h-3.5 w-3.5" />
                       </motion.button>
+                      </Tooltip>
+                      <Tooltip content="Delete">
                       <motion.button
                         whileHover={{ scale: 1.08 }}
                         whileTap={{ scale: 0.92 }}
@@ -347,6 +342,7 @@ export default function MusicListView({
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </motion.button>
+                      </Tooltip>
                     </div>
                   </td>
                 </motion.tr>
