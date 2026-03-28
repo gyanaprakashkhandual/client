@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -10,8 +11,10 @@ import {
   Moon,
   Sun,
   ChevronDown,
+  Menu,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
+import { useSidebar } from "@/app/context/Sidebar.context";
 import {
   fetchAllMusic,
   createMusic,
@@ -25,20 +28,18 @@ import {
   selectMusicError,
   selectMusicTotal,
 } from "@/app/lib/features/music/music.selector";
-import MusicForm from "../music/components/Music.form";
-import MusicTable from "../music/components/Music.table";
-import DeleteModal from "../music/components/Delete.modal";
-import ToastContainer, {
-  type Toast,
-} from "../music/components/Toast.container";
-import type { IMusic } from "../lib/types";
 
-export default function MusicPage() {
-  const dispatch = useAppDispatch();
+import type { IMusic } from '@/app/lib/types';
+
+
+
+function Navbar() {
+      const dispatch = useAppDispatch();
   const tracks = useAppSelector(selectAllTracks);
   const loading = useAppSelector(selectMusicLoading);
   const error = useAppSelector(selectMusicError);
   const total = useAppSelector(selectMusicTotal);
+  const { isOpen, toggleSidebar } = useSidebar();
 
   const [showForm, setShowForm] = useState(false);
   const [editingTrack, setEditingTrack] = useState<IMusic | null>(null);
@@ -86,9 +87,7 @@ export default function MusicPage() {
 
   const handleUpdate = async (data: Partial<IMusic>) => {
     if (!editingTrack) return;
-    const result = await dispatch(
-      updateMusic({ id: editingTrack._id, body: data }),
-    );
+    const result = await dispatch(updateMusic({ id: editingTrack._id, body: data }));
     if (updateMusic.fulfilled.match(result)) {
       addToast("success", "Track updated successfully!");
       setEditingTrack(null);
@@ -118,20 +117,20 @@ export default function MusicPage() {
     setEditingTrack(null);
   };
 
-  const filtered = tracks.filter(
-    (t) =>
-      t.title.toLowerCase().includes(search.toLowerCase()) ||
-      t.artist.toLowerCase().includes(search.toLowerCase()) ||
-      t.album.toLowerCase().includes(search.toLowerCase()) ||
-      t.genre.toLowerCase().includes(search.toLowerCase()),
-  );
-
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-950 transition-colors duration-300">
-      {/* Header */}
+    <div>
+        {/* Header */}
       <header className="sticky top-0 z-30 border-b border-neutral-100 dark:border-neutral-800 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3">
+            <motion.button
+              onClick={toggleSidebar}
+              whileTap={{ scale: 0.95 }}
+              className="p-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
+              title={isOpen ? "Close sidebar" : "Open sidebar"}
+            >
+              <Menu size={20} strokeWidth={2} />
+            </motion.button>
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-black dark:bg-white">
               <Music2 className="h-5 w-5 text-white dark:text-black" />
             </div>
@@ -139,9 +138,6 @@ export default function MusicPage() {
               <h1 className="text-base font-bold leading-none text-black dark:text-white">
                 Music Manager
               </h1>
-              <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">
-                {total} track{total !== 1 ? "s" : ""}
-              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -152,11 +148,7 @@ export default function MusicPage() {
             >
               <motion.span
                 animate={loading ? { rotate: 360 } : {}}
-                transition={{
-                  duration: 1,
-                  repeat: loading ? Infinity : 0,
-                  ease: "linear",
-                }}
+                transition={{ duration: 1, repeat: loading ? Infinity : 0, ease: "linear" }}
               >
                 <RefreshCw className="h-4 w-4" />
               </motion.span>
@@ -165,11 +157,7 @@ export default function MusicPage() {
               onClick={() => setDarkMode((d) => !d)}
               className="flex h-9 w-9 items-center justify-center rounded-xl text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white transition-all"
             >
-              {darkMode ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
+              {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             <motion.button
               whileTap={{ scale: 0.97 }}
@@ -185,81 +173,8 @@ export default function MusicPage() {
           </div>
         </div>
       </header>
-
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-6">
-        {/* Form Panel */}
-        <div ref={formRef}>
-          <AnimatePresence>
-            {showForm && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                style={{ overflow: "hidden" }}
-              >
-                <div className="pb-2">
-                  <MusicForm
-                    initialData={editingTrack}
-                    onSubmit={editingTrack ? handleUpdate : handleCreate}
-                    onCancel={handleCancelForm}
-                    isLoading={loading}
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Tracks Section */}
-        <div>
-          {/* Toolbar */}
-          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
-              All Tracks
-            </h2>
-            <div className="relative w-full sm:w-64">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
-              <input
-                className="w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 py-2 pl-9 pr-4 text-sm text-black dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all"
-                placeholder="Search tracks..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <MusicTable
-            tracks={filtered}
-            onEdit={handleEdit}
-            onDelete={setDeletingTrack}
-            isLoading={loading && tracks.length === 0}
-          />
-
-          {/* Search no results */}
-          {!loading && filtered.length === 0 && tracks.length > 0 && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-4 text-center text-sm text-neutral-400"
-            >
-              No tracks match &ldquo;{search}&rdquo;
-            </motion.p>
-          )}
-        </div>
-      </main>
-
-      {/* Delete Confirmation Modal */}
-      <DeleteModal
-        isOpen={Boolean(deletingTrack)}
-        trackTitle={deletingTrack?.title ?? ""}
-        onConfirm={handleDelete}
-        onCancel={() => setDeletingTrack(null)}
-        isLoading={loading}
-      />
-
-      {/* Toasts */}
-      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </div>
-  );
+  )
 }
+
+export default Navbar

@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Music, Settings, Play } from "lucide-react";
+import { Music, Settings, Play, X } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
+import { useSidebar } from "@/app/context/Sidebar.context";
 
 const NAV_ITEMS = [
   {
@@ -15,30 +16,54 @@ const NAV_ITEMS = [
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
+  const { isOpen, closeSidebar } = useSidebar();
 
   return (
-    <aside
+    <motion.aside
+      initial={false}
+      animate={{
+        x: isOpen ? 0 : -240,
+        opacity: isOpen ? 1 : 0,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      }}
       className="
       fixed left-0 top-0 h-screen w-60 z-40
       flex flex-col
       bg-white dark:bg-neutral-950
       border-r border-neutral-100 dark:border-neutral-800
+      pointer-events-auto
     "
+      style={{
+        pointerEvents: isOpen ? "auto" : "none",
+      }}
     >
       {/* Header */}
       <div className="px-6 pt-7 pb-6 border-b border-neutral-100 dark:border-neutral-800">
-        <div className="flex items-center gap-2.5">
-          <span className="w-7 h-7 rounded-lg bg-black dark:bg-white flex items-center justify-center shrink-0">
-            <Play
-              size={11}
-              fill="white"
-              stroke="white"
-              className="dark:fill-black dark:stroke-black ml-0.5"
-            />
-          </span>
-          <span className="text-[15px] font-semibold tracking-tight text-black dark:text-white">
-            Workspace
-          </span>
+        <div className="flex items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 rounded-lg bg-black dark:bg-white flex items-center justify-center shrink-0">
+              <Play
+                size={11}
+                fill="white"
+                stroke="white"
+                className="dark:fill-black dark:stroke-black ml-0.5"
+              />
+            </span>
+            <span className="text-[15px] font-semibold tracking-tight text-black dark:text-white">
+              Workspace
+            </span>
+          </div>
+          <button
+            onClick={closeSidebar}
+            className="p-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
+            title="Close sidebar"
+          >
+            <X size={18} strokeWidth={2} />
+          </button>
         </div>
       </div>
 
@@ -111,6 +136,6 @@ export default function Sidebar() {
           <span className="text-[13.5px] font-medium">Settings</span>
         </button>
       </div>
-    </aside>
+    </motion.aside>
   );
 }
