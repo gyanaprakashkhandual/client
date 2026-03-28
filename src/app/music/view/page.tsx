@@ -197,13 +197,12 @@ export default function MusicViewPage() {
 
       {/* Modals */}
       <AnimatePresence>
-        {showForm && (
-          <MusicForm
-            initialData={editingTrack}
-            onSubmit={editingTrack ? handleUpdate : handleCreate}
-            onCancel={handleCancelForm}
-          />
-        )}
+        <MusicForm
+          isOpen={showForm}
+          initialData={editingTrack}
+          onSubmit={editingTrack ? handleUpdate : handleCreate}
+          onCancel={handleCancelForm}
+        />
         {deletingTrack && (
           <DeleteModal
             isOpen={!!deletingTrack}

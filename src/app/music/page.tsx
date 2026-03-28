@@ -181,6 +181,7 @@ export default function MusicPage() {
                 onSubmit={editingTrack ? handleUpdate : handleCreate}
                 onCancel={handleCancelForm}
                 isLoading={loading}
+                isOpen={false}
               />
             </motion.div>
           </div>
