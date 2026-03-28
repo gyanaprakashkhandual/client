@@ -3,6 +3,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Music2,
@@ -135,6 +136,9 @@ function ActivePill({
 }
 
 function Navbar({ onAddClick, onFilterChange }: NavbarProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectMusicError);
   const { isOpen, toggleSidebar } = useSidebar();
@@ -154,6 +158,18 @@ function Navbar({ onAddClick, onFilterChange }: NavbarProps) {
   const [viewMenuOpen, setViewMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
 
+  // Read view type from URL
+  useEffect(() => {
+    const viewParam = searchParams.get("view") || "list-view";
+    const viewTypeMap: Record<string, string> = {
+      "list-view": "List View",
+      "grid-view": "Grid View",
+      "full-view": "Full View",
+    };
+    const viewType = viewTypeMap[viewParam] || "List View";
+    setFilters((prev) => ({ ...prev, viewType }));
+  }, [searchParams]);
+
   useEffect(() => {
     if (error) dispatch(clearMusicError());
   }, [error, dispatch]);
@@ -171,6 +187,18 @@ function Navbar({ onAddClick, onFilterChange }: NavbarProps) {
     setSortMenuOpen(false);
   };
   const handleViewChange = (viewType: string) => {
+    // Map view names to URL params
+    const viewParamMap: Record<string, string> = {
+      "List View": "list-view",
+      "Grid View": "grid-view",
+      "Full View": "full-view",
+    };
+    const viewParam = viewParamMap[viewType] || "list-view";
+    
+    // Navigate with query param
+    const newUrl = `/music/view?view=${viewParam}`;
+    router.push(newUrl);
+    
     setFilters((prev) => ({ ...prev, viewType }));
     setViewMenuOpen(false);
   };

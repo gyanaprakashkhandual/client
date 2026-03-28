@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Music, Settings, Play, X } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSidebar } from "@/app/context/Sidebar.context";
+import { Tooltip } from "./Tooltip.ui";
 
 const NAV_ITEMS = [
   {
@@ -42,7 +43,7 @@ export default function Sidebar() {
       }}
     >
       {/* Header */}
-      <div className="px-6 pt-7 pb-6 border-b border-neutral-100 dark:border-neutral-800">
+      <div className="px-6 pt-5 pb-5 border-b border-neutral-100 dark:border-neutral-800">
         <div className="flex items-center justify-between gap-2.5">
           <div className="flex items-center gap-2.5">
             <span className="w-7 h-7 rounded-lg bg-black dark:bg-white flex items-center justify-center shrink-0">
@@ -57,21 +58,19 @@ export default function Sidebar() {
               Workspace
             </span>
           </div>
-          <button
-            onClick={closeSidebar}
-            className="p-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
-            title="Close sidebar"
-          >
-            <X size={18} strokeWidth={2} />
-          </button>
+          <Tooltip content="Close Sidebar">
+            <button
+              onClick={closeSidebar}
+              className="p-1 rounded-lg hover:bg-neutral-200 bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
+            >
+              <X size={18} strokeWidth={2} />
+            </button>
+          </Tooltip>
         </div>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4">
-        <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 select-none">
-          Browse
-        </p>
         <ul className="space-y-0.5">
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href;

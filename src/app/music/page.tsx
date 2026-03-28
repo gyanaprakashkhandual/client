@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Music2,
@@ -44,8 +44,6 @@ export default function MusicPage() {
   const [deletingTrack, setDeletingTrack] = useState<IMusic | null>(null);
   const [search, setSearch] = useState("");
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const [darkMode, setDarkMode] = useState(false);
-  const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     dispatch(fetchAllMusic());
@@ -57,14 +55,6 @@ export default function MusicPage() {
       dispatch(clearMusicError());
     }
   }, [error]);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
 
   const addToast = (type: Toast["type"], message: string) => {
     const id = Math.random().toString(36).slice(2);
@@ -105,9 +95,6 @@ export default function MusicPage() {
   const handleEdit = (track: IMusic) => {
     setEditingTrack(track);
     setShowForm(true);
-    setTimeout(() => {
-      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
   };
 
   const handleCancelForm = () => {
@@ -125,34 +112,16 @@ export default function MusicPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950 transition-colors duration-300">
-      {/* Header */}
-      <Navbar/>
+      {/* Header - Now just passes props */}
+      <Navbar 
+        onAddClick={() => {
+          setEditingTrack(null);
+          setShowForm(true);
+        }}
+        onRefresh={() => dispatch(fetchAllMusic())}
+      />
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-6">
-        {/* Form Panel */}
-        <div ref={formRef}>
-          <AnimatePresence>
-            {showForm && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                style={{ overflow: "hidden" }}
-              >
-                <div className="pb-2">
-                  <MusicForm
-                    initialData={editingTrack}
-                    onSubmit={editingTrack ? handleUpdate : handleCreate}
-                    onCancel={handleCancelForm}
-                    isLoading={loading}
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
         {/* Tracks Section */}
         <div>
           {/* Toolbar */}
@@ -199,6 +168,28 @@ export default function MusicPage() {
         onCancel={() => setDeletingTrack(null)}
         isLoading={loading}
       />
+
+      {/* Music Form as Popup/Modal */}
+      <AnimatePresence>
+        {showForm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-2xl"
+            >
+              <MusicForm
+                initialData={editingTrack}
+                onSubmit={editingTrack ? handleUpdate : handleCreate}
+                onCancel={handleCancelForm}
+                isLoading={loading}
+              />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Toasts */}
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
