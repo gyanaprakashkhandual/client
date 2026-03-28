@@ -58,6 +58,9 @@ export default function MusicListView({
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
+  // Ensure tracks is always an array
+  const tracksArray = Array.isArray(tracks) ? tracks : [];
+
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
       setSortDir((d) => (d === "asc" ? "desc" : "asc"));
@@ -67,7 +70,7 @@ export default function MusicListView({
     }
   };
 
-  const sorted = [...tracks].sort((a, b) => {
+  const sorted = [...tracksArray].sort((a, b) => {
     const av = a[sortKey] ?? "";
     const bv = b[sortKey] ?? "";
     const cmp = String(av).localeCompare(String(bv), undefined, {
@@ -122,7 +125,7 @@ export default function MusicListView({
     );
   }
 
-  if (tracks.length === 0) {
+  if (tracksArray.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 8 }}

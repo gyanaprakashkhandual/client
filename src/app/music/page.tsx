@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, Suspense } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
@@ -106,13 +106,19 @@ export default function MusicPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950 transition-colors duration-300">
       {/* Header - Now just passes props */}
-      <Navbar
-        onAddClick={() => {
-          setEditingTrack(null);
-          setShowForm(true);
-        }}
-        onRefresh={() => dispatch(fetchAllMusic())}
-      />
+      <Suspense
+        fallback={
+          <div className="h-14 border-b border-neutral-100 dark:border-neutral-800" />
+        }
+      >
+        <Navbar
+          onAddClick={() => {
+            setEditingTrack(null);
+            setShowForm(true);
+          }}
+          onRefresh={() => dispatch(fetchAllMusic())}
+        />
+      </Suspense>
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-6">
         {/* Tracks Section */}

@@ -112,7 +112,10 @@ export default function MusicFullView({
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [listOpen, setListOpen] = useState(true);
 
-  const sorted = [...tracks].sort((a, b) => {
+  // Ensure tracks is always an array
+  const tracksArray = Array.isArray(tracks) ? tracks : [];
+
+  const sorted = [...tracksArray].sort((a, b) => {
     const av = a[sortKey] ?? "";
     const bv = b[sortKey] ?? "";
     const cmp = String(av).localeCompare(String(bv), undefined, {
@@ -163,7 +166,7 @@ export default function MusicFullView({
     );
   }
 
-  if (tracks.length === 0) {
+  if (tracksArray.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 8 }}

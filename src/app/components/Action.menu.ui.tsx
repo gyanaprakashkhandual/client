@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/immutability */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {
@@ -418,24 +418,38 @@ function ActionMenuList({
       }
 
       if ((child.type as any).name === "ActionMenuGroup") {
+        const childElement = child as React.ReactElement<
+          Record<string, unknown>
+        >;
         const filteredGroupItems = React.Children.toArray(
-          child.props.children,
+          (childElement.props as Record<string, unknown>)
+            .children as React.ReactNode,
         ).filter((subChild) => {
           if (!isValidElement(subChild)) return false;
           if ((subChild.type as any).name !== "ActionMenuItem") return false;
-          const label = String(subChild.props.children || "").toLowerCase();
+          const subChildElement = subChild as React.ReactElement<
+            Record<string, unknown>
+          >;
+          const label = String(
+            (subChildElement.props as Record<string, unknown>).children || "",
+          ).toLowerCase();
           return label.includes(searchQuery.toLowerCase());
         });
 
         if (filteredGroupItems.length === 0) return null;
 
-        return React.cloneElement(child as React.ReactElement, {
+        return React.cloneElement(childElement, {
           children: filteredGroupItems,
         });
       }
 
       if ((child.type as any).name === "ActionMenuItem") {
-        const label = String(child.props.children || "").toLowerCase();
+        const childElement = child as React.ReactElement<
+          Record<string, unknown>
+        >;
+        const label = String(
+          (childElement.props as Record<string, unknown>).children || "",
+        ).toLowerCase();
         if (label.includes(searchQuery.toLowerCase())) {
           return child;
         }
@@ -465,7 +479,9 @@ function ActionMenuList({
             selectionVariant: "single",
             onSelect: () => {
               handleItemSelect(itemLabel);
-              (childElement.props as Record<string, unknown>).onSelect?.();
+              (
+                (childElement.props as any).onSelect as (() => void) | undefined
+              )?.();
             },
           });
         }
@@ -493,8 +509,10 @@ function ActionMenuList({
                   onSelect: () => {
                     handleItemSelect(itemLabel);
                     (
-                      subChildElement.props as Record<string, unknown>
-                    ).onSelect?.();
+                      (subChildElement.props as any).onSelect as
+                        | (() => void)
+                        | undefined
+                    )?.();
                   },
                 });
               }

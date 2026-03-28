@@ -110,6 +110,9 @@ export default function MusicTileView({
 }: MusicTileViewProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
+  // Ensure tracks is always an array
+  const tracksArray = Array.isArray(tracks) ? tracks : [];
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -120,7 +123,7 @@ export default function MusicTileView({
     );
   }
 
-  if (tracks.length === 0) {
+  if (tracksArray.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 8 }}
@@ -143,7 +146,7 @@ export default function MusicTileView({
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       <AnimatePresence initial={false}>
-        {tracks.map((track, i) => {
+        {tracksArray.map((track, i) => {
           const palette = getGenrePalette(track.genre);
           const isHovered = hoveredId === track._id;
 
