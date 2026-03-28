@@ -43,7 +43,7 @@ export default function DeleteModal({
                 </div>
                 <button
                   onClick={onCancel}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-neutral-400 hover:bg-neutral-100 bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
                 >
                   <X className="h-4 w-4" />
                 </button>

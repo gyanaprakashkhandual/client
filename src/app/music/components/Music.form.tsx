@@ -181,20 +181,20 @@ function CustomCalendar({ value, onChange, onClose }: CalendarProps) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -6, scale: 0.97 }}
       transition={{ duration: 0.16, ease: "easeOut" }}
-      className="absolute z-200 mt-1.5 w-64 rounded-2xl border border-white/10 bg-[#111] shadow-2xl shadow-black/40 overflow-hidden"
+      className="absolute z-200 mt-1.5 w-64 rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-black/10 overflow-hidden dark:bg-zinc-900 dark:border-zinc-800"
     >
       <div className="flex items-center justify-between px-3 pt-3 pb-2">
         <button
           type="button"
           onClick={prevMonth}
-          className="flex h-6 w-6 items-center justify-center rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-all"
+          className="flex h-6 w-6 items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-all dark:hover:bg-zinc-800 dark:text-zinc-500 dark:hover:text-zinc-300"
         >
           <ChevronLeft className="h-3 w-3" />
         </button>
         <button
           type="button"
           onClick={() => setMode((m) => (m === "days" ? "months" : "days"))}
-          className="flex items-center gap-1 text-[11px] font-semibold text-white hover:text-white/60 transition-colors"
+          className="flex items-center gap-1 text-[11px] font-semibold text-gray-700 hover:text-black transition-colors dark:text-zinc-300 dark:hover:text-white"
         >
           {MONTHS[viewMonth]} {viewYear}
           <ChevronDown className="h-2.5 w-2.5 opacity-50" />
@@ -202,7 +202,7 @@ function CustomCalendar({ value, onChange, onClose }: CalendarProps) {
         <button
           type="button"
           onClick={nextMonth}
-          className="flex h-6 w-6 items-center justify-center rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-all"
+          className="flex h-6 w-6 items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-all dark:hover:bg-zinc-800 dark:text-zinc-500 dark:hover:text-zinc-300"
         >
           <ChevronRight className="h-3 w-3" />
         </button>
@@ -222,7 +222,7 @@ function CustomCalendar({ value, onChange, onClose }: CalendarProps) {
               {DAYS.map((d) => (
                 <div
                   key={d}
-                  className="flex h-6 items-center justify-center text-[9px] font-bold uppercase tracking-wider text-white/25"
+                  className="flex h-6 items-center justify-center text-[9px] font-bold uppercase tracking-wider text-gray-400"
                 >
                   {d}
                 </div>
@@ -245,14 +245,14 @@ function CustomCalendar({ value, onChange, onClose }: CalendarProps) {
                     className={`relative flex h-7 w-full items-center justify-center rounded-lg text-[11px] font-medium transition-all
                       ${
                         isSelected
-                          ? "bg-violet-500 text-white"
+                          ? "bg-violet-600 text-white"
                           : isToday
-                            ? "text-violet-400 font-bold"
-                            : "text-white/60 hover:bg-white/8 hover:text-white"
+                            ? "text-violet-600 font-bold"
+                            : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
                       }`}
                   >
                     {isToday && !isSelected && (
-                      <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-0.5 rounded-full bg-violet-400" />
+                      <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-0.5 rounded-full bg-violet-600" />
                     )}
                     {day}
                   </button>
@@ -281,27 +281,27 @@ function CustomCalendar({ value, onChange, onClose }: CalendarProps) {
                     setMode("days");
                   }}
                   className={`rounded-xl py-1.5 text-[10px] font-semibold transition-all
-                    ${i === viewMonth ? "bg-violet-500 text-white" : "text-white/50 hover:bg-white/8 hover:text-white"}`}
+                    ${i === viewMonth ? "bg-violet-600 text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"}`}
                 >
                   {m.slice(0, 3)}
                 </button>
               ))}
             </div>
-            <div className="mt-2 flex items-center justify-between border-t border-white/8 pt-2">
+            <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-2 dark:border-zinc-800">
               <button
                 type="button"
                 onClick={() => setViewYear((y) => y - 1)}
-                className="flex h-6 w-6 items-center justify-center rounded-lg hover:bg-white/10 text-white/40 transition-all"
+                className="flex h-6 w-6 items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 transition-all dark:hover:bg-zinc-800 dark:text-zinc-500"
               >
                 <ChevronLeft className="h-3 w-3" />
               </button>
-              <span className="text-[11px] font-bold text-white">
+              <span className="text-[11px] font-bold text-gray-700 dark:text-zinc-300">
                 {viewYear}
               </span>
               <button
                 type="button"
                 onClick={() => setViewYear((y) => y + 1)}
-                className="flex h-6 w-6 items-center justify-center rounded-lg hover:bg-white/10 text-white/40 transition-all"
+                className="flex h-6 w-6 items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 transition-all dark:hover:bg-zinc-800 dark:text-zinc-500"
               >
                 <ChevronRight className="h-3 w-3" />
               </button>
@@ -338,16 +338,16 @@ function ActionMenu({
         className={`w-full flex items-center justify-between rounded-xl border px-3 py-2 text-[11px] transition-all
           ${
             open
-              ? "border-violet-500/60 ring-1 ring-violet-500/30 bg-white/5"
-              : "border-white/10 bg-white/5 hover:border-white/20"
+              ? "border-violet-500/60 ring-1 ring-violet-500/30 bg-white"
+              : "border-gray-200 bg-white hover:border-gray-300"
           }
-          ${value ? "text-white" : "text-white/30"}`}
+          ${value ? "text-black" : "text-gray-400"} dark:bg-zinc-900 dark:border-zinc-700 dark:hover:border-zinc-600`}
       >
         <span>{value || placeholder}</span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.18 }}
-          className="text-white/30"
+          className="text-gray-400"
         >
           <ChevronDown className="h-3 w-3" />
         </motion.span>
@@ -360,7 +360,7 @@ function ActionMenu({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.97 }}
             transition={{ duration: 0.14, ease: "easeOut" }}
-            className="absolute z-200 mt-1 w-full rounded-xl border border-white/10 bg-[#111] shadow-2xl shadow-black/40 overflow-hidden py-1"
+            className="absolute z-200 mt-1 w-full rounded-xl border border-gray-200 bg-white shadow-2xl shadow-black/10 overflow-hidden py-1 dark:bg-zinc-900 dark:border-zinc-700"
           >
             {options.map((opt, i) => (
               <motion.button
@@ -376,8 +376,8 @@ function ActionMenu({
                 className={`w-full flex items-center justify-between px-3 py-1.5 text-[11px] font-medium transition-all
                   ${
                     value === opt
-                      ? "text-white bg-white/8"
-                      : "text-white/50 hover:bg-white/5 hover:text-white"
+                      ? "text-black bg-gray-100 dark:bg-zinc-800"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-black dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
                   }`}
               >
                 <span>{opt}</span>
@@ -387,7 +387,7 @@ function ActionMenu({
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
                   >
-                    <Check className="h-3 w-3 text-violet-400" />
+                    <Check className="h-3 w-3 text-violet-600" />
                   </motion.span>
                 )}
               </motion.button>
@@ -425,13 +425,13 @@ function DatePicker({ value, onChange }: DatePickerProps) {
         className={`w-full flex items-center justify-between rounded-xl border px-3 py-2 text-[11px] transition-all
           ${
             open
-              ? "border-violet-500/60 ring-1 ring-violet-500/30 bg-white/5"
-              : "border-white/10 bg-white/5 hover:border-white/20"
+              ? "border-violet-500/60 ring-1 ring-violet-500/30 bg-white"
+              : "border-gray-200 bg-white hover:border-gray-300"
           }
-          ${value ? "text-white" : "text-white/30"}`}
+          ${value ? "text-black" : "text-gray-400"} dark:bg-zinc-900 dark:border-zinc-700 dark:hover:border-zinc-600`}
       >
         <span>{display || "Pick a date"}</span>
-        <Calendar className="h-3 w-3 text-white/30" />
+        <Calendar className="h-3 w-3 text-gray-400" />
       </button>
       <AnimatePresence>
         {open && (
@@ -503,9 +503,9 @@ function CoverImageUpload({ value, onChange }: CoverImageUploadProps) {
       className={`relative w-full h-28 rounded-xl border-2 border-dashed overflow-hidden cursor-pointer transition-all group
         ${
           dragOver
-            ? "border-violet-400/60 bg-violet-500/8"
-            : "border-white/10 hover:border-white/20 bg-white/3 hover:bg-white/5"
-        }`}
+            ? "border-violet-500 bg-violet-50"
+            : "border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50"
+        } dark:border-zinc-700 dark:hover:border-zinc-600 dark:bg-zinc-900 dark:hover:bg-zinc-950`}
     >
       <input
         ref={inputRef}
@@ -532,7 +532,7 @@ function CoverImageUpload({ value, onChange }: CoverImageUploadProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <Loader2 className="h-5 w-5 text-violet-400 animate-spin" />
+              <Loader2 className="h-5 w-5 text-violet-600 animate-spin" />
             </motion.div>
           ) : (
             <motion.div
@@ -543,16 +543,16 @@ function CoverImageUpload({ value, onChange }: CoverImageUploadProps) {
               className="flex flex-col items-center gap-1"
             >
               <div
-                className={`flex h-7 w-7 items-center justify-center rounded-lg transition-all ${value ? "bg-black/50 backdrop-blur-sm" : "bg-white/8 group-hover:bg-white/12"}`}
+                className={`flex h-7 w-7 items-center justify-center rounded-lg transition-all ${value ? "bg-white/90 backdrop-blur-sm shadow" : "bg-gray-100 group-hover:bg-gray-200"} dark:bg-zinc-800`}
               >
                 {value ? (
-                  <ImageIcon className="h-3.5 w-3.5 text-white" />
+                  <ImageIcon className="h-3.5 w-3.5 text-gray-700" />
                 ) : (
-                  <Upload className="h-3.5 w-3.5 text-white/40 group-hover:text-white/70" />
+                  <Upload className="h-3.5 w-3.5 text-gray-400 group-hover:text-gray-600" />
                 )}
               </div>
               <span
-                className={`text-[10px] font-medium transition-colors ${value ? "text-white/80" : "text-white/30 group-hover:text-white/50"}`}
+                className={`text-[10px] font-medium transition-colors ${value ? "text-gray-700" : "text-gray-400 group-hover:text-gray-600"}`}
               >
                 {value ? "Change cover" : "Drop or click to upload"}
               </span>
@@ -574,10 +574,10 @@ interface FieldProps {
 function Field({ label, icon, children, required }: FieldProps) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-white/30">
-        <span className="text-white/20">{icon}</span>
+      <label className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-gray-500">
+        <span className="text-gray-400">{icon}</span>
         {label}
-        {required && <span className="text-rose-400/80 ml-0.5">*</span>}
+        {required && <span className="text-rose-500 ml-0.5">*</span>}
       </label>
       {children}
     </div>
@@ -585,16 +585,16 @@ function Field({ label, icon, children, required }: FieldProps) {
 }
 
 const inputClass =
-  "w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[11px] text-white placeholder:text-white/25 focus:outline-none focus:ring-1 focus:ring-violet-500/40 focus:border-violet-500/40 transition-all";
+  "w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-[11px] text-black placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-violet-500/40 focus:border-violet-500/40 transition-all dark:bg-zinc-900 dark:border-zinc-700 dark:text-white dark:placeholder:text-zinc-500";
 
 function Divider({ label }: { label: string }) {
   return (
     <div className="col-span-2 flex items-center gap-2.5 py-0.5">
-      <div className="flex-1 h-px bg-white/6" />
-      <span className="text-[9px] font-bold uppercase tracking-widest text-white/20">
+      <div className="flex-1 h-px bg-gray-200 dark:bg-zinc-800" />
+      <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400">
         {label}
       </span>
-      <div className="flex-1 h-px bg-white/6" />
+      <div className="flex-1 h-px bg-gray-200 dark:bg-zinc-800" />
     </div>
   );
 }
@@ -654,34 +654,30 @@ export default function MusicForm({
           initial="hidden"
           animate="show"
           exit="exit"
-          className="fixed inset-0 z-100 flex items-center justify-center p-4"
-          style={{
-            backdropFilter: "blur(12px)",
-            backgroundColor: "rgba(0,0,0,0.72)",
-          }}
+          className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/60 dark:bg-black/80"
         >
           <motion.div
             variants={modalVariants}
             initial="hidden"
             animate="show"
             exit="exit"
-            className="relative w-full max-w-xl max-h-[90vh] flex flex-col rounded-2xl overflow-hidden"
+            className="relative w-full max-w-3xl max-h-[90vh] flex flex-col rounded-2xl overflow-hidden"
             style={{
-              background: "linear-gradient(145deg, #0f0f0f 0%, #0a0a0a 100%)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: "white",
+              border: "1px solid #e5e5e5",
               boxShadow:
-                "0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06)",
+                "0 40px 80px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.8)",
             }}
           >
             <div
               className="h-px w-full shrink-0"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent, rgba(139,92,246,0.6), transparent)",
+                  "linear-gradient(90deg, transparent, #7c3aed, transparent)",
               }}
             />
 
-            <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/6 shrink-0">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 shrink-0 dark:border-zinc-800">
               <div className="flex items-center gap-2.5">
                 <motion.div
                   initial={{ scale: 0.6, opacity: 0 }}
@@ -692,11 +688,7 @@ export default function MusicForm({
                     damping: 28,
                     delay: 0.1,
                   }}
-                  className="flex h-7 w-7 items-center justify-center rounded-lg"
-                  style={{
-                    background: "linear-gradient(135deg, #7c3aed, #4f46e5)",
-                    boxShadow: "0 4px 12px rgba(124,58,237,0.4)",
-                  }}
+                  className="flex h-7 w-7 items-center justify-center rounded-lg bg-black"
                 >
                   {isEdit ? (
                     <Save className="h-3.5 w-3.5 text-white" />
@@ -709,10 +701,10 @@ export default function MusicForm({
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.12, duration: 0.22 }}
                 >
-                  <h2 className="text-xs font-bold text-white leading-tight">
+                  <h2 className="text-xs font-bold text-black leading-tight dark:text-white">
                     {isEdit ? "Edit Track" : "Add New Track"}
                   </h2>
-                  <p className="text-[10px] text-white/30 mt-0.5">
+                  <p className="text-[10px] text-gray-500 mt-0.5 dark:text-zinc-400">
                     {isEdit
                       ? "Update the track details below"
                       : "Fill in the track details below"}
@@ -726,20 +718,14 @@ export default function MusicForm({
                   onClick={onCancel}
                   whileHover={{ scale: 1.08 }}
                   whileTap={{ scale: 0.92 }}
-                  className="flex h-6 w-6 items-center justify-center rounded-lg text-white/30 hover:bg-white/8 hover:text-white transition-all"
+                  className="flex h-6 w-6 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-all dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
                 >
                   <X className="h-3.5 w-3.5" />
                 </motion.button>
               )}
             </div>
 
-            <div
-              className="overflow-y-auto flex-1 px-5 py-4"
-              style={{
-                scrollbarWidth: "thin",
-                scrollbarColor: "rgba(255,255,255,0.1) transparent",
-              }}
-            >
+            <div className="overflow-y-auto flex-1 px-5 py-4">
               <form id="music-form" onSubmit={handleSubmit}>
                 <motion.div
                   variants={containerVariants}
@@ -903,8 +889,8 @@ export default function MusicForm({
             </div>
 
             <div
-              className="flex items-center justify-end gap-2.5 px-5 py-3.5 border-t border-white/6 shrink-0"
-              style={{ background: "rgba(0,0,0,0.3)" }}
+              className="flex items-center justify-end gap-2.5 px-5 py-3.5 border-t border-gray-100 shrink-0 dark:border-zinc-800"
+              style={{ background: "rgba(255,255,255,0.95)" }}
             >
               {onCancel && (
                 <motion.button
@@ -912,7 +898,7 @@ export default function MusicForm({
                   onClick={onCancel}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  className="rounded-xl border border-white/10 px-4 py-2 text-[11px] font-medium text-white/50 hover:bg-white/5 hover:border-white/20 hover:text-white/80 transition-all"
+                  className="rounded-xl border border-gray-200 px-4 py-2 text-[11px] font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-black transition-all dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
                 >
                   Cancel
                 </motion.button>
@@ -924,17 +910,13 @@ export default function MusicForm({
                 disabled={isLoading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
-                className="relative flex items-center gap-1.5 overflow-hidden rounded-xl px-4 py-2 text-[11px] font-semibold text-white disabled:opacity-50 transition-all"
-                style={{
-                  background: "linear-gradient(135deg, #7c3aed, #4f46e5)",
-                  boxShadow: "0 4px 16px rgba(124,58,237,0.35)",
-                }}
+                className="relative flex items-center gap-1.5 overflow-hidden rounded-xl px-4 py-2 text-[11px] font-semibold bg-black text-white disabled:opacity-50 transition-all"
               >
                 <motion.span
                   initial={{ x: "-100%" }}
                   whileHover={{ x: "200%" }}
                   transition={{ duration: 0.45, ease: "easeInOut" }}
-                  className="absolute inset-0 w-1/3 bg-linear-to-r from-transparent via-white/15 to-transparent skew-x-12"
+                  className="absolute inset-0 w-1/3 bg-linear-to-r from-transparent via-white/20 to-transparent skew-x-12"
                 />
 
                 <AnimatePresence mode="wait">
