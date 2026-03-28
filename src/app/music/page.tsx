@@ -1,11 +1,10 @@
 
 import React from 'react'
-import MusicPage from './Music.page'
 
 function page() {
   return (
     <div>
-        <MusicPage/>
+        page
     </div>
   )
 }
