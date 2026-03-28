@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, User, Eye, EyeOff, LogIn, AlertCircle, Loader2 } from "lucide-react";
+import {
+  Lock,
+  User,
+  Eye,
+  EyeOff,
+  LogIn,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 import { useAuth } from "../context/Auth.context";
 
 export default function AuthModal() {
@@ -26,7 +34,7 @@ export default function AuthModal() {
     <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center p-4">
       {/* Subtle background grid */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-size-[4rem_4rem]" />
       </div>
 
       <motion.div
@@ -37,9 +45,8 @@ export default function AuthModal() {
       >
         {/* Card */}
         <div className="relative bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/40 overflow-hidden">
-
           {/* Top accent bar */}
-          <div className="h-1 w-full bg-gradient-to-r from-neutral-900 via-neutral-600 to-neutral-400 dark:from-white dark:via-neutral-400 dark:to-neutral-600" />
+          <div className="h-1 w-full bg-linear-to-r from-neutral-900 via-neutral-600 to-neutral-400 dark:from-white dark:via-neutral-400 dark:to-neutral-600" />
 
           <div className="p-8 sm:p-10">
             {/* Icon + heading */}
@@ -50,7 +57,10 @@ export default function AuthModal() {
                 transition={{ delay: 0.15, duration: 0.4, ease: "backOut" }}
                 className="w-14 h-14 rounded-2xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center mb-5"
               >
-                <Lock className="w-6 h-6 text-neutral-800 dark:text-neutral-100" strokeWidth={1.8} />
+                <Lock
+                  className="w-6 h-6 text-neutral-800 dark:text-neutral-100"
+                  strokeWidth={1.8}
+                />
               </motion.div>
 
               <motion.h1
@@ -85,7 +95,10 @@ export default function AuthModal() {
                   Username
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 dark:text-neutral-500" strokeWidth={1.8} />
+                  <User
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 dark:text-neutral-500"
+                    strokeWidth={1.8}
+                  />
                   <input
                     type="text"
                     value={username}
@@ -103,7 +116,10 @@ export default function AuthModal() {
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 dark:text-neutral-500" strokeWidth={1.8} />
+                  <Lock
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 dark:text-neutral-500"
+                    strokeWidth={1.8}
+                  />
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -117,10 +133,11 @@ export default function AuthModal() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors"
                   >
-                    {showPassword
-                      ? <EyeOff className="w-4 h-4" strokeWidth={1.8} />
-                      : <Eye className="w-4 h-4" strokeWidth={1.8} />
-                    }
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" strokeWidth={1.8} />
+                    ) : (
+                      <Eye className="w-4 h-4" strokeWidth={1.8} />
+                    )}
                   </button>
                 </div>
               </div>
@@ -135,7 +152,10 @@ export default function AuthModal() {
                     className="overflow-hidden"
                   >
                     <div className="flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 text-sm">
-                      <AlertCircle className="w-4 h-4 flex-shrink-0" strokeWidth={1.8} />
+                      <AlertCircle
+                        className="w-4 h-4 shrink-0"
+                        strokeWidth={1.8}
+                      />
                       <span>{error}</span>
                     </div>
                   </motion.div>
