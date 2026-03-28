@@ -3,9 +3,6 @@
 import { useCallback, useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Search,
-} from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import {
   fetchAllMusic,
@@ -47,11 +44,16 @@ export default function MusicViewPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingTrack, setEditingTrack] = useState<IMusic | null>(null);
   const [deletingTrack, setDeletingTrack] = useState<IMusic | null>(null);
-  const [search, setSearch] = useState("");
+  const [search] = useState("");
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   // Get view type from URL
   const viewParam = searchParams.get("view") || "list-view";
+
+  const addToast = useCallback((type: Toast["type"], message: string) => {
+    const id = Math.random().toString(36).slice(2);
+    setToasts((prev) => [...prev, { id, type, message }]);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchAllMusic());
@@ -59,15 +61,12 @@ export default function MusicViewPage() {
 
   useEffect(() => {
     if (error) {
-      addToast("error", error);
+      Promise.resolve().then(() => {
+        addToast("error", error);
+      });
       dispatch(clearMusicError());
     }
-  }, [error, dispatch]);
-
-  const addToast = (type: Toast["type"], message: string) => {
-    const id = Math.random().toString(36).slice(2);
-    setToasts((prev) => [...prev, { id, type, message }]);
-  };
+  }, [error, dispatch, addToast]);
 
   const dismissToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -83,7 +82,9 @@ export default function MusicViewPage() {
 
   const handleUpdate = async (data: Partial<IMusic>) => {
     if (!editingTrack) return;
-    const result = await dispatch(updateMusic({ id: editingTrack._id, body: data }));
+    const result = await dispatch(
+      updateMusic({ id: editingTrack._id, body: data }),
+    );
     if (updateMusic.fulfilled.match(result)) {
       addToast("success", "Track updated successfully!");
       setEditingTrack(null);
@@ -115,20 +116,8 @@ export default function MusicViewPage() {
       t.title.toLowerCase().includes(search.toLowerCase()) ||
       t.artist.toLowerCase().includes(search.toLowerCase()) ||
       t.album.toLowerCase().includes(search.toLowerCase()) ||
-      t.genre.toLowerCase().includes(search.toLowerCase())
+      t.genre.toLowerCase().includes(search.toLowerCase()),
   );
-
-  const getViewTitle = () => {
-    switch (viewParam) {
-      case "grid-view":
-        return "Grid View";
-      case "full-view":
-        return "Full View";
-      case "list-view":
-      default:
-        return "List View";
-    }
-  };
 
   const renderView = () => {
     switch (viewParam) {
@@ -175,9 +164,7 @@ export default function MusicViewPage() {
         onRefresh={() => dispatch(fetchAllMusic())}
       />
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-6">
-        
-
+      <main className="mx-auto max-w-7xl px-2 py-2 sm:px-2 space-y-2">
         {/* View Content */}
         <AnimatePresence mode="wait">
           <motion.div
@@ -219,7 +206,8 @@ export default function MusicViewPage() {
         )}
         {deletingTrack && (
           <DeleteModal
-            track={deletingTrack}
+            isOpen={!!deletingTrack}
+            trackTitle={deletingTrack.title}
             onConfirm={handleDelete}
             onCancel={() => setDeletingTrack(null)}
           />
@@ -227,10 +215,7 @@ export default function MusicViewPage() {
       </AnimatePresence>
 
       {/* Toast */}
-      <ToastContainer
-        toasts={toasts}
-        onDismiss={dismissToast}
-      />
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </div>
   );
 }

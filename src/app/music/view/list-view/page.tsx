@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react-hooks/static-components */
 "use client";
 
 import { useState } from "react";
@@ -142,7 +144,7 @@ export default function MusicListView({
 
   return (
     <div className="w-full">
-      <div className="overflow-hidden rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-sm">
+      <div className="overflow-hidden rounded-sm border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-sm">
         <table className="w-full">
           <thead>
             <tr className="border-b border-neutral-100 dark:border-neutral-800/80">
@@ -222,7 +224,7 @@ export default function MusicListView({
 
                   <td className="px-3 py-3.5">
                     <div className="flex items-center gap-3">
-                      <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800 shadow-sm">
+                      <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800 shadow-sm">
                         {track.coverImageUrl ? (
                           <img
                             src={track.coverImageUrl}
@@ -263,7 +265,7 @@ export default function MusicListView({
                           </div>
                         </motion.div>
                       </div>
-                      <span className="font-semibold text-neutral-900 dark:text-neutral-100 line-clamp-1 max-w-[160px] text-sm">
+                      <span className="font-semibold text-neutral-900 dark:text-neutral-100 line-clamp-1 max-w-40 text-sm">
                         {track.title}
                       </span>
                     </div>
@@ -275,7 +277,7 @@ export default function MusicListView({
                     </span>
                   </td>
 
-                  <td className="hidden px-3 py-3.5 md:table-cell max-w-[140px]">
+                  <td className="hidden px-3 py-3.5 md:table-cell max-w-35">
                     <span className="line-clamp-1 text-sm text-neutral-500 dark:text-neutral-500">
                       {track.album}
                     </span>
@@ -350,24 +352,6 @@ export default function MusicListView({
           </tbody>
         </table>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="mt-3 flex items-center justify-between px-1"
-      >
-        <span className="text-xs text-neutral-400 dark:text-neutral-600 tabular-nums">
-          {tracks.length} {tracks.length === 1 ? "track" : "tracks"}
-        </span>
-        <span className="text-xs text-neutral-400 dark:text-neutral-600">
-          Sorted by{" "}
-          <span className="font-medium text-neutral-600 dark:text-neutral-400 capitalize">
-            {sortKey}
-          </span>{" "}
-          {sortDir === "asc" ? "↑" : "↓"}
-        </span>
-      </motion.div>
     </div>
   );
 }

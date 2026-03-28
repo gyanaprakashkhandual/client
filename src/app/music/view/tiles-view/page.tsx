@@ -9,7 +9,6 @@ import {
   Heart,
   MessageCircle,
   Clock,
-  Eye,
   Play,
 } from "lucide-react";
 import type { IMusic } from "@/app/lib/types";
@@ -191,7 +190,7 @@ export default function MusicTileView({
                 <motion.div
                   animate={{ opacity: isHovered ? 1 : 0 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+                  className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent"
                 />
 
                 <motion.div

@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LogOut, User, Shield, Clock } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useAuth } from "./context/Auth.context";
 import AuthModal from "./components/Auth.modal";
 import HomePage from "./pages/Home.page";
+import { Tooltip } from "./components/Tooltip.ui";
 
 export default function Home() {
-  const { isAuthenticated, loading, username, logout } = useAuth();
+  const { isAuthenticated, loading, logout } = useAuth();
 
   // While verifying token on first load — show nothing (or a spinner)
   if (loading) {
@@ -39,14 +40,15 @@ export default function Home() {
       >
         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
         <User className="w-3.5 h-3.5" strokeWidth={1.8} />
-        <span className="font-medium text-neutral-900 dark:text-white">{username}</span>
-        <button
+        <span className="font-medium text-neutral-900 dark:text-white">Gyana Prakash Khandual</span>
+        <Tooltip content="Sign Out">
+          <button
           onClick={logout}
           className="ml-1 text-neutral-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
-          title="Sign out"
         >
           <LogOut className="w-3.5 h-3.5" strokeWidth={1.8} />
         </button>
+        </Tooltip>
       </motion.div>
 
       <HomePage />

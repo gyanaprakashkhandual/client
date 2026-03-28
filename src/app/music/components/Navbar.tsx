@@ -3,7 +3,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Music2,
@@ -138,7 +138,6 @@ function ActivePill({
 function Navbar({ onAddClick, onFilterChange }: NavbarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectMusicError);
   const { isOpen, toggleSidebar } = useSidebar();
@@ -194,11 +193,11 @@ function Navbar({ onAddClick, onFilterChange }: NavbarProps) {
       "Full View": "full-view",
     };
     const viewParam = viewParamMap[viewType] || "list-view";
-    
+
     // Navigate with query param
     const newUrl = `/music/view?view=${viewParam}`;
     router.push(newUrl);
-    
+
     setFilters((prev) => ({ ...prev, viewType }));
     setViewMenuOpen(false);
   };

@@ -1,16 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Music2,
-  Plus,
-  Search,
-  RefreshCw,
-  Moon,
-  Sun,
-  ChevronDown,
-} from "lucide-react";
+import { Music2, Plus, Search, RefreshCw, Moon, Sun } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import {
   fetchAllMusic,
@@ -26,12 +19,12 @@ import {
   selectMusicTotal,
 } from "@/app/lib/features/music/music.selector";
 import MusicForm from "../music/components/Music.form";
-import MusicTable from "../music/components/Music.table";
 import DeleteModal from "../music/components/Delete.modal";
 import ToastContainer, {
   type Toast,
 } from "../music/components/Toast.container";
 import type { IMusic } from "../lib/types";
+import MusicListView from "../music/view/list-view/page";
 
 export default function MusicPage() {
   const dispatch = useAppDispatch();
@@ -229,11 +222,14 @@ export default function MusicPage() {
             </div>
           </div>
 
-          <MusicTable
+          <MusicListView
             tracks={filtered}
             onEdit={handleEdit}
             onDelete={setDeletingTrack}
             isLoading={loading && tracks.length === 0}
+            onView={function (): void {
+              throw new Error("Function not implemented.");
+            }}
           />
 
           {/* Search no results */}

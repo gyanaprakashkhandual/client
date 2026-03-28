@@ -37,14 +37,14 @@ function ToastItem({ toast, onDismiss }: ToastItemProps) {
       }`}
     >
       {toast.type === "success" ? (
-        <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-emerald-500" />
+        <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
       ) : (
-        <XCircle className="h-4 w-4 flex-shrink-0 text-rose-500" />
+        <XCircle className="h-4 w-4 shrink-0 text-rose-500" />
       )}
       <span className="flex-1">{toast.message}</span>
       <button
         onClick={() => onDismiss(toast.id)}
-        className="ml-1 flex-shrink-0 opacity-50 hover:opacity-100 transition-opacity"
+        className="ml-1 shrink-0 opacity-50 hover:opacity-100 transition-opacity"
       >
         <X className="h-3.5 w-3.5" />
       </button>
@@ -57,9 +57,12 @@ interface ToastContainerProps {
   onDismiss: (id: string) => void;
 }
 
-export default function ToastContainer({ toasts, onDismiss }: ToastContainerProps) {
+export default function ToastContainer({
+  toasts,
+  onDismiss,
+}: ToastContainerProps) {
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 min-w-[280px] max-w-sm">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 min-w-70 max-w-sm">
       <AnimatePresence mode="popLayout">
         {toasts.map((t) => (
           <ToastItem key={t.id} toast={t} onDismiss={onDismiss} />

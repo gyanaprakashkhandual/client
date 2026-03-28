@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {
@@ -24,7 +25,7 @@ import {
   useActionMenu,
   type MenuPosition,
   type ActionMenuProviderProps,
-} from "../context/Action.menu.ui";
+} from "../context/Action.menu.context";
 
 function cn(...classes: (string | undefined | null | false)[]): string {
   return classes.filter(Boolean).join(" ");
@@ -296,8 +297,8 @@ function ActionMenuList({
       if (isValidElement(child)) {
         if (child.type && (child.type as any).name === "ActionMenuItem") {
           items.push(child);
-        } else if (child.props?.children) {
-          React.Children.forEach(child.props.children, (subChild) => {
+        } else if ((child.props as any)?.children) {
+          React.Children.forEach((child.props as any).children, (subChild) => {
             if (
               isValidElement(subChild) &&
               (subChild.type as any).name === "ActionMenuItem"
@@ -318,7 +319,9 @@ function ActionMenuList({
     searchQuery.trim() === ""
       ? allItems
       : allItems.filter((item) => {
-          const label = String(item.props.children || "").toLowerCase();
+          const label = String(
+            (item.props as Record<string, unknown>)?.children || "",
+          ).toLowerCase();
           return label.includes(searchQuery.toLowerCase());
         });
 
@@ -450,37 +453,48 @@ function ActionMenuList({
         if (!isValidElement(child)) return child;
 
         if ((child.type as any).name === "ActionMenuItem") {
-          const itemLabel = String(child.props.children || "");
+          const childElement = child as React.ReactElement<
+            Record<string, unknown>
+          >;
+          const itemLabel = String(childElement.props.children || "");
           const isSelected = isItemSelected(itemLabel);
 
-          return React.cloneElement(child as React.ReactElement, {
-            ...child.props,
+          return React.cloneElement(childElement, {
+            ...childElement.props,
             selected: isSelected,
             selectionVariant: "single",
             onSelect: () => {
               handleItemSelect(itemLabel);
-              child.props.onSelect?.();
+              (childElement.props as Record<string, unknown>).onSelect?.();
             },
           });
         }
 
         if ((child.type as any).name === "ActionMenuGroup") {
+          const childElement = child as React.ReactElement<
+            Record<string, unknown>
+          >;
           const wrappedGroupItems = React.Children.map(
-            child.props.children,
+            (childElement.props as Record<string, unknown>).children,
             (subChild) => {
               if (!isValidElement(subChild)) return subChild;
 
               if ((subChild.type as any).name === "ActionMenuItem") {
-                const itemLabel = String(subChild.props.children || "");
+                const subChildElement = subChild as React.ReactElement<
+                  Record<string, unknown>
+                >;
+                const itemLabel = String(subChildElement.props.children || "");
                 const isSelected = isItemSelected(itemLabel);
 
-                return React.cloneElement(subChild as React.ReactElement, {
-                  ...subChild.props,
+                return React.cloneElement(subChildElement, {
+                  ...subChildElement.props,
                   selected: isSelected,
                   selectionVariant: "single",
                   onSelect: () => {
                     handleItemSelect(itemLabel);
-                    subChild.props.onSelect?.();
+                    (
+                      subChildElement.props as Record<string, unknown>
+                    ).onSelect?.();
                   },
                 });
               }
@@ -488,7 +502,7 @@ function ActionMenuList({
             },
           );
 
-          return React.cloneElement(child as React.ReactElement, {
+          return React.cloneElement(childElement, {
             children: wrappedGroupItems,
           });
         }

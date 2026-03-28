@@ -1,10 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  positionClasses,
-  calculatePosition,
-} from "../context/Tooltip.context";
+import { positionClasses, calculatePosition } from "../context/Tooltip.context";
 
 export const Tooltip = ({
   content = "",
@@ -13,6 +10,13 @@ export const Tooltip = ({
   delay = 0,
   maxWidth = 200,
   className = "",
+}: {
+  content?: string;
+  children: React.ReactNode;
+  position?: string;
+  delay?: number;
+  maxWidth?: number;
+  className?: string;
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [calculatedPosition, setCalculatedPosition] = useState(position);
@@ -27,12 +31,6 @@ export const Tooltip = ({
       setCalculatedPosition(newPosition);
     }
   }, [isVisible, position]);
-
-  const animationVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.8 },
-  };
 
   return (
     <div className={`relative inline-block ${className}`}>

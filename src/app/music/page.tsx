@@ -1,16 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Music2,
-  Plus,
-  Search,
-  RefreshCw,
-  Moon,
-  Sun,
-  ChevronDown,
-} from "lucide-react";
+import { Search } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import {
   fetchAllMusic,
@@ -23,10 +16,9 @@ import {
   selectAllTracks,
   selectMusicLoading,
   selectMusicError,
-  selectMusicTotal,
 } from "@/app/lib/features/music/music.selector";
 import MusicForm from "./components/Music.form";
-import MusicTable from "./components/Music.table";
+import MusicListView from "./view/list-view/page";
 import DeleteModal from "./components/Delete.modal";
 import ToastContainer, { type Toast } from "./components/Toast.container";
 import type { IMusic } from "../lib/types";
@@ -37,7 +29,6 @@ export default function MusicPage() {
   const tracks = useAppSelector(selectAllTracks);
   const loading = useAppSelector(selectMusicLoading);
   const error = useAppSelector(selectMusicError);
-  const total = useAppSelector(selectMusicTotal);
 
   const [showForm, setShowForm] = useState(false);
   const [editingTrack, setEditingTrack] = useState<IMusic | null>(null);
@@ -75,7 +66,9 @@ export default function MusicPage() {
 
   const handleUpdate = async (data: Partial<IMusic>) => {
     if (!editingTrack) return;
-    const result = await dispatch(updateMusic({ id: editingTrack._id, body: data }));
+    const result = await dispatch(
+      updateMusic({ id: editingTrack._id, body: data }),
+    );
     if (updateMusic.fulfilled.match(result)) {
       addToast("success", "Track updated successfully!");
       setEditingTrack(null);
@@ -107,13 +100,13 @@ export default function MusicPage() {
       t.title.toLowerCase().includes(search.toLowerCase()) ||
       t.artist.toLowerCase().includes(search.toLowerCase()) ||
       t.album.toLowerCase().includes(search.toLowerCase()) ||
-      t.genre.toLowerCase().includes(search.toLowerCase())
+      t.genre.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950 transition-colors duration-300">
       {/* Header - Now just passes props */}
-      <Navbar 
+      <Navbar
         onAddClick={() => {
           setEditingTrack(null);
           setShowForm(true);
@@ -140,11 +133,14 @@ export default function MusicPage() {
             </div>
           </div>
 
-          <MusicTable
+          <MusicListView
             tracks={filtered}
             onEdit={handleEdit}
             onDelete={setDeletingTrack}
             isLoading={loading && tracks.length === 0}
+            onView={function (): void {
+              throw new Error("Function not implemented.");
+            }}
           />
 
           {/* Search no results */}
