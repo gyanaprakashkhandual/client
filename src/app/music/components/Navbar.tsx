@@ -20,11 +20,16 @@ import {
   X,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
-import { clearMusicError } from "@/app/lib/features/music/music.slice";
+import {
+  clearMusicError,
+  createMusic,
+} from "@/app/lib/features/music/music.slice";
 import { selectMusicError } from "@/app/lib/features/music/music.selector";
 import { useSidebar } from "@/app/context/Sidebar.context";
 import { Tooltip } from "@/app/components/Tooltip.ui";
 import ActionMenu from "@/app/components/Action.menu.ui";
+import MusicForm from "./Music.form";
+import { IMusic } from "@/app/lib/types";
 
 const GENRES = [
   "Pop",
@@ -138,10 +143,12 @@ function ActivePill({
 function Navbar({ onAddClick, onFilterChange }: NavbarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const dispatch = useAppDispatch();
   const error = useAppSelector(selectMusicError);
   const { isOpen, toggleSidebar } = useSidebar();
   const { theme, setTheme } = useTheme();
+  const dispatch = useAppDispatch();
+  const [isMusicFormOpen, setIsMusicFormOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [searchFocused, setSearchFocused] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -157,6 +164,27 @@ function Navbar({ onAddClick, onFilterChange }: NavbarProps) {
   const [viewMenuOpen, setViewMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
 
+  const handleAddClick = () => {
+    setIsMusicFormOpen(true);
+    onAddClick?.();
+  };
+
+  const handleFormSubmit = async (data: Partial<IMusic>) => {
+    setIsSubmitting(true);
+    try {
+      await dispatch(createMusic(data)).unwrap();
+      setIsMusicFormOpen(false);
+      // Optionally refresh the music list here
+    } catch (error) {
+      console.error("Failed to create music:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleFormCancel = () => {
+    setIsMusicFormOpen(false);
+  };
   // Read view type from URL
   useEffect(() => {
     const viewParam = searchParams.get("view") || "list-view";
@@ -463,7 +491,7 @@ function Navbar({ onAddClick, onFilterChange }: NavbarProps) {
             <motion.button
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.02 }}
-              onClick={onAddClick}
+              onClick={handleAddClick}
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
               className="flex items-center gap-1.5 rounded-xl bg-black dark:bg-white px-3.5 py-2 text-sm font-semibold text-white dark:text-black shadow-sm hover:shadow-md hover:opacity-85 transition-all duration-150"
             >
@@ -652,6 +680,12 @@ function Navbar({ onAddClick, onFilterChange }: NavbarProps) {
             </motion.div>
           )}
         </AnimatePresence>
+        <MusicForm
+          isOpen={isMusicFormOpen}
+          onSubmit={handleFormSubmit}
+          onCancel={handleFormCancel}
+          isLoading={isSubmitting}
+        />
       </div>
     </header>
   );
