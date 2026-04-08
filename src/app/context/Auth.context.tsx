@@ -3,7 +3,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-const BASE_URL = "https://gyanaprakashkhandual.onrender.com/api/user";
+const BASE_URL = "http://localhost:5000/api/user";
 
 interface AuthContextType {
   isAuthenticated: boolean;

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const BASE = "https://gyanaprakashkhandual.onrender.com/api/music";
+const BASE = "http://localhost:5000/api/music";
 
 interface LikesData {
   count: number;

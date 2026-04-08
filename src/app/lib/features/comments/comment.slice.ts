@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { IComment } from "../../types";
 
-const BASE = "https://gyanaprakashkhandual.onrender.com/api/music";
+const BASE = "http://localhost:5000/api/music";
 
 interface CommentsState {
   byTrackId: Record<
