@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/app/context/Auth.context";
 import { useSidebar } from "@/app/context/Sidebar.context";
 import Sidebar from "@/app/components/Sidebar";
+import ActivityBar from "./core/Activity.bar";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, loading } = useAuth();
@@ -15,6 +16,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {!loading && isAuthenticated && (
         <>
           <Sidebar />
+          <ActivityBar/>
           {/* Overlay backdrop */}
           <motion.div
             initial={false}
